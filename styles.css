@@ -1,0 +1,46 @@
+.top-img {
+	margin-bottom: 0px;
+    background-image: url('img/_MG_2011.JPG');}
+    background-image: url("paper.gif");
+    background-repeat: repeat-y;
+
+
+}
+
+.navbar-default {
+	background: #fff;
+
+  z-index: 150;
+ 
+  margin-bottom: 0px;
+  box-shadow: 0 2px 3px rgba(0,0,0,.4);
+}
+
+#featured {
+    margin-top: 65px;
+    color: #fff;
+}
+
+#canvas {
+    width: 800px;
+}
+
+body {
+   background-color: #00385e;
+background-image: url(https://www.transparenttextures.com/patterns/inspiration-geometry.png);
+
+}
+
+#students {
+    height: 150px;
+    width: 150px;
+}
+
+#about {
+    color: #fff;
+}
+
+#sometext {
+    color: #fff;
+    margin-top: 100px;
+}

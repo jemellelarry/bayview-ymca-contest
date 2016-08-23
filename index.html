@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bayview Tech Squad</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!--Scroll Magic-->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+
+<!--Add paper js-->
+
+
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/paper-full.js"></script>
+<script type="text/paperscript" canvas="canvas">
+var Ball = function(point, vector) {
+    if (!vector || vector.isZero()) {
+        this.vector = Point.random() * 5;
+    } else {
+        this.vector = vector * 2;
+    }
+    this.point = point;
+    this.dampen = 0.4;
+    this.gravity = 3;
+    this.bounce = -0.6;
+
+    var color = {
+        hue: Math.random() * 360,
+        saturation: 1,
+        brightness: 1
+    };
+    var gradient = new Gradient([color, 'black'], true);
+
+    var radius = this.radius = 50 * Math.random() + 30;
+    // Wrap CompoundPath in a Group, since CompoundPaths directly
+    // applies the transformations to the content, just like Path.
+    var ball = new CompoundPath({
+        children: [
+            new Path.Circle({
+                radius: radius
+            }),
+            new Path.Circle({
+                center: radius / 8,
+                radius: radius / 3
+            })
+        ],
+        fillColor: new Color(gradient, 0, radius, radius / 8),
+    });
+
+    this.item = new Group({
+        children: [ball],
+        applyMatrix: false,
+        position: this.point
+    });
+}
+
+Ball.prototype.iterate = function() {
+    var size = view.size;
+    this.vector.y += this.gravity;
+    this.vector.x *= 0.99;
+    var pre = this.point + this.vector;
+    if (pre.x < this.radius || pre.x > size.width - this.radius)
+        this.vector.x *= -this.dampen;
+    if (pre.y < this.radius || pre.y > size.height - this.radius) {
+        if (Math.abs(this.vector.x) < 3)
+            this.vector = Point.random() * [150, 100] + [-75, 20];
+        this.vector.y *= this.bounce;
+    }
+
+    var max = Point.max(this.radius, this.point + this.vector);
+    this.item.position = this.point = Point.min(max, size - this.radius);
+    this.item.rotate(this.vector.x);
+};
+
+
+var balls = [];
+for (var i = 0; i < 10; i++) {
+    var position = Point.random() * view.size,
+        vector = (Point.random() - [0.5, 0]) * [50, 100],
+        ball = new Ball(position, vector);
+    balls.push(ball);
+}
+
+var textItem = new PointText({
+    point: [20, 30],
+    fillColor: 'black',
+    content: 'Click, drag and release to add balls.'
+});
+
+var lastDelta;
+function onMouseDrag(event) {
+    lastDelta = event.delta;
+}
+
+function onMouseUp(event) {
+    var ball = new Ball(event.point, lastDelta);
+    balls.push(ball);
+    lastDelta = null;
+}
+
+function onFrame() {
+    for (var i = 0, l = balls.length; i < l; i++)
+        balls[i].iterate();
+}
+</script>
+
+</head>
+<body>
+
+
+<header>
+<div class="jumbotron top-img text-center">
+   <!--  <img id="head-image" src="img/_MG_2011.JPG"> -->
+    <h1 id="my-sticky-element">Bayview Tech Squad</h1>
+    <h2>Innovation, Motivation & Dedication</h2>
+</div>
+</header>
+
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#home">Bayview Tech Squad</a>
+</div>
+
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav navbar-right fixed">
+    <li><a href="#about">About</a></li>
+    <li><a href="#featured">Featured</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#instructors">Instructors</a></li>
+    <li><a href="#multimedia">Multimedia</a></li>
+    <li><a href="#contact">Contact</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+<section id="home">
+
+<!-- Jumbotron -->     
+<div class="jumbotron mid-img text-center">
+<!--  <img id="head-image" src="img/_MG_2006.JPG"> -->    
+<h1>WEBSITE CHALLENGE</h1>
+<p class="lead">This is a website challenge for the students in our tech class the student which uses the most raw code will win the challenge. The winner will recieve a new mac computer</p>
+<p><a class="btn btn-lg btn-success" href="#" role="button">Read More</a></p>
+</div>
+</section>
+
+<!-- Example row of columns -->
+<section id="featured">
+
+<div class="row">
+<h1>Bayview Hackathon 2016</h1>
+<div class="col-lg-4">
+
+
+
+<h2>Contestant #1</h2>
+<p>JEMELLE LARRY </p>
+<img id="students" class="img-block" src="img/_MG_2017.JPG"> 
+<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+</div>
+
+
+<div class="col-lg-4">
+<h2>Contestant #2</h2>
+<p>PHIL YOUNGER. </p>
+<img id="students" class="img-block" src="img/_MG_2049.JPG">
+<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+</div>
+
+<div class="col-lg-4">
+<h2>Contestant #3</h2>
+<p>ANTHONY PETERS.</p>
+<img id="students" class="img-block" src="img/_MG_2066.JPG">
+<p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+</div>
+</div>
+</section>
+
+<section id="funstuff">
+    <canvas id="canvas" resize></canvas>
+
+
+</section>
+<!-- <section id="promotions">
+<div class="row">
+<div class="col-sm-8">
+    <img src="http://placehold.it/650x350">
+</div>
+<div class="col-sm-4">
+    <img src="http://placehold.it/350x350">
+</div>
+</div>
+</section> -->
+
+<section id="about">
+<div class="row">
+<div class="col-sm-6">
+    <h3>Column 1</h3>
+    <p>Here we have more pictures of the students in our class we have all been together for 6 weeks now an where all on different levels and this challenge is to see where everyone is at. </p>
+    <p>first zu, second keith, third Ericka fourth Alize fith nicole and the last picture is the class on a field trip to autodesk </p>
+</div>
+<div class="col-sm-6">
+    <h3>Column 2</h3>
+    <p>Here we have more pictures of the instructors in our class we really appreaite them because they pushed us to learn as much as we can in the litte time we had together. </p>
+    <p>first Dontae second Jeremy third Angie fourth Demetrius fifth DR Olivia and the last picture is the class on a field trip to Wikia</p>
+</div>
+<hr>
+
+</div>
+</section>
+<section id="team">
+<div class="row">
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_2028.JPG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_2058.JPG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_1351.JPG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="IMG_3002.PNG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/10342508_999538750107518_5523791619857343793_n.jpg"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/IMG_3003.JPG"></div>
+
+</div>
+
+
+<div style="padding:20px" class="row">
+  <div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_2027.JPG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="IMG_2998.PNG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="IMG_2995-2.PNG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/IMG_2999.PNG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_2007.JPG"></div>
+<div class="col-sm-2"><img id="students" class="img-circle" src="img/_MG_2151.JPG">
+
+</div>
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="instructors">
+
+<h1 id="sometext"> SPECIAL SHOUT OUT TO THE INSTRUCTORS THAT MADE IT HAPPEN</h1>   
+<p id="sometext">I just wanna give a personal shout out and tell all of you guys thank you.(demetrius,angie,dontae and jeremy) If it wasnt for yall i would not be in the position i am in now. Which is goin in the right direction, making the right choices and to overall know i did something great by finishing this class. I wanna thank demetrius for stoping me when he saw me in the lobby downstairs an talkin to me,that was the start of something good and new i didnt know what we was goin to do bt i knew i had to commit to it because everything u said to me was helpful and informational. I wanna thank angie for noticeing me in a full classroom and taking the time to help me with my career building skills my resume building skills and just being a all around personal motivation thank you so much you helped me come everyday. I wanna thank dontae for taking the time and not just the time bt his personal time to really wannna work with us and teach us something the will change the game, i call it the game changer because after this is all said and done ill be adding myself to the 1% minorty int the tech industry and hopefully it goes up lol bt really thank you for so much knowledge and time everytime i think of coding im gonna think of you. Last but not least jeremy i wanna thank you for coming in with so much positivity and knowledge you help me with so much i dont know where to start i just know for sure u helped me take my proffesonallism to the next level and just helped me be my self and your goin to be apart of my memory too every time i think of hack the hood. so with all that being said for the hundreth time thank you all so much.   </p>
+
+</section>
+
+
+
+<section id="multimedia">
+
+<canvas id="myChart" width="400" height="400"></canvas>
+    
+
+
+</section>
+
+
+
+<section id="contact">
+<h2>Contact Bayview Tech Squad</h2>
+<form class="form-horizontal" role="form" method="post" action="index.php">
+<div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="">
+    </div>
+</div>
+<div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-10">
+        <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="">
+    </div>
+</div>
+<div class="form-group">
+    <label for="message" class="col-sm-2 control-label">Message</label>
+    <div class="col-sm-10">
+        <textarea class="form-control" rows="4" name="message"></textarea>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+        <input id="submit" name="submit" type="submit" value="Send" class="btn btn-primary">
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+        <! Will be used to display an alert to the user>
+    </div>
+</div>
+</form>
+</section>
+</div>
+
+</body>
+</html>
+
